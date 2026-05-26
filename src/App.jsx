@@ -6,11 +6,10 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Gallery from "./pages/Gallery";
 import Contact from './pages/Contact'
-import Testimonials from './pages/Testimonials'
-import Blog from './pages/Blog'
-import Error404 from './pages/Error404'
-import Pricing from './pages/Pricing'
-import SinglePost from './pages/SinglePost'
+import PreNursery from './pages/Pre-Nursery'
+import Nursery from './pages/Nursery'
+import KG2 from './pages/KG2'
+import KG1 from './pages/KG1'
 import ScrollToTop from './components/ScrollToTop'
 
 export default function App() {
@@ -23,12 +22,11 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/pages/testimonials" element={<Testimonials />} />
-        <Route path="/pages/blog" element={<Blog />} />
-        <Route path="/pages/404" element={<Error404 />} />
-        <Route path="/pages/pricing" element={<Pricing />} />
-        <Route path="/pages/singlePost" element={<SinglePost />} />
-        <Route path="*" element={<Error404 />} />
+        <Route path="/pages/pre-nursery" element={<PreNursery />} />
+        <Route path="/pages/nursery" element={<Nursery />} />
+        <Route path="/pages/kg2" element={<KG2 />} />
+        <Route path="/pages/kg1" element={<KG1 />} />
+        <Route path="*" element={<KG2 />} />
       </Routes>
       <Footer />
     </div>

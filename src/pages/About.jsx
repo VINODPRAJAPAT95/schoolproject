@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import principalImg from '../assets/teachers/teacher2.jpg'
 import directorImg from '../assets/teachers/teacher1.jpg'
+import kidsBanner from '../assets/kids-banner.png'
 
 const values = [
   { emoji: '❤️', title: 'Love & Care', desc: 'Every child receives unconditional love and support from day one!' },
@@ -121,7 +122,7 @@ export default function About() {
 
       {/* ── About the School ── */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-1 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <div className="inline-flex items-center gap-2 bg-kidPink/10 rounded-full px-4 py-2 mb-4">
               <span className="font-fredoka text-kidPink text-sm">🌟 Our School</span>
@@ -143,7 +144,7 @@ export default function About() {
               ))}
             </div>
           </div>
-          <div className="bg-gradient-to-br from-kidYellow/20 to-kidOrange/20 rounded-[3rem] p-10 border-4 border-dashed border-kidYellow text-center">
+          <div className="bg-gradient-to-br from-kidYellow/20 to-kidOrange/20  p-10 border-4 border-dashed border-kidYellow text-center">
             <div className="text-8xl mb-4 animate-float">🏫</div>
             <h3 className="font-fredoka text-3xl text-kidPurple mb-2">Our School</h3>
             <p className="font-nunito text-gray-600 text-sm">A magical place where every morning feels like a new adventure!</p>
@@ -433,7 +434,7 @@ export default function About() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((v, i) => (
-              <div key={i} className="bg-white rounded-3xl p-6 shadow-lg border-2 border-transparent hover:border-kidYellow hover:scale-105 transition-all duration-300 flex gap-4 items-start">
+              <div key={i} className="bg-white  p-6 shadow-lg border-2 border-transparent hover:border-kidYellow hover:scale-105 transition-all duration-300 flex gap-4 items-start">
                 <div className="text-4xl shrink-0">{v.emoji}</div>
                 <div>
                   <h3 className="font-fredoka text-xl text-kidPurple mb-1">{v.title}</h3>
@@ -444,19 +445,95 @@ export default function About() {
           </div>
         </div>
       </section>
+{/* ── Modern Info Section ── */}
+<section className="py-20 overflow-hidden">
+  <div className="max-w-6xl mx-auto px-6">
 
-      {/* ── CTA ── */}
-      <section className="py-16 bg-gradient-to-r from-kidBlue to-kidTeal text-center relative overflow-hidden">
-        <div className="absolute inset-0 star-bg opacity-20" />
-        <div className="relative z-10 max-w-2xl mx-auto px-6">
-          <div className="text-6xl mb-4 animate-bounce-slow">🎉</div>
-          <h2 className="font-fredoka text-4xl text-white mb-4">Join Our Pansies & Poppies Family Today!</h2>
-          <p className="font-nunito text-white/80 mb-6">Be part of something truly magical and special! 🌟</p>
-          <Link to="/contact" className="bg-white text-kidBlue font-fredoka text-lg px-8 py-4 rounded-full shadow-xl hover:scale-110 transition-transform">
-            🌈 Get In Touch!
-          </Link>
+    {/* Top Image */}
+    <div className="relative z-10 -mb-16 flex justify-center">
+      <img
+        src={kidsBanner}
+        alt="Kids Learning"
+        className="w-full max-w-5xl object-contain"
+      />
+    </div>
+
+    {/* Bottom Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  overflow-hidden">
+
+      {/* Card 1 */}
+      <div className="bg-sky-500 text-white p-10 pt-24 text-center">
+        <div className="w-20 h-20 mx-auto rounded-full bg-white flex items-center justify-center text-4xl mb-6">
+          📚
         </div>
-      </section>
+
+        <h3 className="font-fredoka text-2xl mb-4">
+          Fun Learning
+        </h3>
+
+        <p className="text-white/90 leading-relaxed">
+          Interactive activities and playful experiences that make learning exciting and joyful for every child.
+        </p>
+      </div>
+
+      {/* Card 2 */}
+      <div className="bg-cyan-400 text-white p-10 pt-24 text-center">
+        <div className="w-20 h-20 mx-auto rounded-full bg-white flex items-center justify-center text-4xl mb-6">
+          🎯
+        </div>
+
+        <h3 className="font-fredoka text-2xl mb-4">
+          Skill Building
+        </h3>
+
+        <p className="text-white/90 leading-relaxed">
+          Activities focused on communication, creativity, confidence, and early childhood development.
+        </p>
+      </div>
+
+      {/* Card 3 */}
+      <div className="bg-red-500 text-white p-10 pt-24 text-center">
+        <div className="w-20 h-20 mx-auto rounded-full bg-white flex items-center justify-center text-4xl mb-6">
+          🧸
+        </div>
+
+        <h3 className="font-fredoka text-2xl mb-4">
+          Happy Environment
+        </h3>
+
+        <p className="text-white/90 leading-relaxed">
+          A safe, caring, and joyful atmosphere where children feel loved, confident, and encouraged.
+        </p>
+      </div>
+
+      {/* Card 4 */}
+      <div className="bg-yellow-400 text-gray-800 p-10 pt-24 text-center">
+        <div className="w-20 h-20 mx-auto rounded-full bg-white flex items-center justify-center text-4xl mb-6">
+          🌈
+        </div>
+
+        <h3 className="font-fredoka text-2xl mb-4">
+          Creative Activities
+        </h3>
+
+        <p className="leading-relaxed">
+          Music, storytelling, crafts, and sensory play designed to inspire imagination and creativity.
+        </p>
+      </div>
+    </div>
+
+    {/* Button */}
+    <div className="text-center mt-10">
+      <Link
+        to="/contact"
+        className="inline-block bg-kidPink text-white font-fredoka px-10 py-4 rounded-full hover:scale-110 transition-all duration-300"
+      >
+        🌟 Learn More
+      </Link>
+    </div>
+
+  </div>
+</section>
     </div>
   )
 }

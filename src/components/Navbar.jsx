@@ -3,255 +3,460 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 
 const pagesDropdown = [
-  { label: '💬 Testimonials', path: '/pages/testimonials' },
-  { label: '📝 Blog', path: '/pages/blog' },
-  { label: '💰 Pricing', path: '/pages/pricing' },
-  { label: '❌ Error404', path: '/pages/error404' },
-  { label: '📄 SinglePost', path: '/pages/SinglePost' },
+  { label: 'Pre Nursery', path: '/pages/Pre-Nursery' },
+  { label: 'Nursery', path: '/pages/Nursery' },
+  { label: 'KG1', path: '/pages/KG1' },
+  { label: 'KG2', path: '/pages/KG2' },
 ];
 
 const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'About', path: '/about' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Home', path: '/', emoji: '🏠' },
+  { label: 'About', path: '/about', emoji: '💛' },
+  { label: 'Gallery', path: '/gallery', emoji: '🖼️' },
+  { label: 'Contact', path: '/contact', emoji: '📞' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobilePagesOpen, setMobilePagesOpen] = useState(false);
 
   const location = useLocation();
 
+  /* Navbar hide/show on scroll */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    let lastScrollY = window.scrollY;
 
-    window.addEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
 
-    return () => window.removeEventListener('scroll', onScroll);
+      // Shadow effect
+      setScrolled(currentScrollY > 50);
+
+      // Always show at top
+      if (currentScrollY < 50) {
+        setShowNavbar(true);
+      }
+
+      // Hide when scrolling down
+      else if (currentScrollY > lastScrollY) {
+        setShowNavbar(false);
+      }
+
+      // Show when scrolling up
+      else {
+        setShowNavbar(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /* Close menu on route change */
   useEffect(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
+    setMobilePagesOpen(false);
   }, [location]);
 
+  /* Lock body scroll when mobile menu open */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-white/97 backdrop-blur-xl shadow-xl py-0'
-          : 'bg-transparent py-0'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 flex items-center h-32">
-
-        {/* LOGO */}
-        <Link
-          to="/"
-          className="flex items-center group flex-shrink-0 mr-auto"
-        >
-          <div className="relative flex items-center">
-            <img
-              src={logo}
-              alt="Kidoria"
-              className="h-32 md:h-36 w-auto max-w-[340px] xl:max-w-[420px] object-contain drop-shadow-xl group-hover:scale-105 transition duration-300"
-            />
-
-            <div className="absolute inset-0 rounded-2xl bg-yellow-300/20 blur-2xl -z-10 group-hover:scale-110 transition duration-300 pointer-events-none" />
-          </div>
-        </Link>
-
-        {/* DESKTOP NAVIGATION */}
-        <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-nowrap ml-4">
-
-          {/* NAV LINKS */}
-          {navLinks.map(({ label, path }) => (
-            <Link
-              key={path}
-              to={path}
-              className={`font-fredoka font-bold px-5 py-2.5 rounded-full text-base xl:text-lg transition-all duration-300 hover:scale-105 whitespace-nowrap ${
-                location.pathname === path
-                  ? 'bg-kidPurple text-white shadow-lg'
-                  : 'text-gray-700 hover:bg-kidYellow hover:text-kidPurple'
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-
-          {/* GALLERY BUTTON */}
-          <Link
-            to="/gallery"
-            className={`font-fredoka font-bold px-5 py-2.5 rounded-full text-base xl:text-lg transition-all duration-300 hover:scale-105 flex items-center gap-1.5 whitespace-nowrap ${
-              location.pathname.startsWith('/gallery')
-                ? 'bg-kidOrange text-white shadow-lg'
-                : 'text-gray-700 hover:bg-kidYellow hover:text-kidPurple'
-            }`}
-          >
-            <span className="text-base"></span>
-            Gallery
-          </Link>
-
-          {/* PAGES DROPDOWN */}
-          <div
-            className="relative"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className={`font-fredoka font-bold px-5 py-2.5 rounded-full text-base xl:text-lg transition-all duration-300 hover:scale-105 flex items-center gap-1 whitespace-nowrap ${
-                dropdownOpen
-                  ? 'bg-kidBlue text-white shadow-lg'
-                  : 'text-gray-700 hover:bg-kidYellow hover:text-kidPurple'
-              }`}
-            >
-              programes
-
-              <span
-                className={`transition-transform duration-300 inline-block ${
-                  dropdownOpen ? 'rotate-180' : ''
-                }`}
-              >
-                ▾
-              </span>
-            </button>
-
-            <div
-              className={`absolute top-full left-0 mt-3 w-56 bg-white rounded-3xl shadow-2xl border-2 border-kidYellow overflow-hidden transition-all duration-300 z-50 ${
-                dropdownOpen
-                  ? 'opacity-100 translate-y-0 visible'
-                  : 'opacity-0 -translate-y-4 invisible'
-              }`}
-            >
-              {pagesDropdown.map((item, i) => (
-                <Link
-                  key={i}
-                  to={item.path}
-                  className="flex items-center gap-3 px-5 py-3.5 font-fredoka font-bold text-gray-700 hover:bg-gradient-to-r hover:from-kidYellow hover:to-kidOrange hover:text-white transition-all border-b border-yellow-100 last:border-none text-sm xl:text-base"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA BUTTON */}
-          <Link
-            to="/pages/pricing"
-            className="ml-2 bg-gradient-to-r from-kidBlue to-kidPurple text-white font-fredoka px-6 py-2.5 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base xl:text-lg whitespace-nowrap"
-          >
-            🎓 Get Started
-          </Link>
-        </div>
-
-        {/* MOBILE MENU BUTTON */}
-        <button
-          className="lg:hidden p-3 ml-auto"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <div className="space-y-1.5">
-
-            <span
-              className={`block w-7 h-0.5 bg-kidPurple transition-all duration-300 origin-center ${
-                menuOpen ? 'rotate-45 translate-y-2' : ''
-              }`}
-            />
-
-            <span
-              className={`block w-7 h-0.5 bg-kidPurple transition-all duration-300 ${
-                menuOpen ? 'opacity-0 scale-x-0' : ''
-              }`}
-            />
-
-            <span
-              className={`block w-7 h-0.5 bg-kidPurple transition-all duration-300 origin-center ${
-                menuOpen ? '-rotate-45 -translate-y-2' : ''
-              }`}
-            />
-
-          </div>
-        </button>
-      </div>
-
-      {/* MOBILE MENU */}
-      <div
-        className={`lg:hidden transition-all duration-500 overflow-hidden ${
-          menuOpen ? 'max-h-[900px] opacity-100' : 'max-h-0 opacity-0'
-        }`}
+    <>
+      {/* ═══════════════ NAVBAR ═══════════════ */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-[9999]
+                    transition-all duration-500
+                    ${
+                      showNavbar
+                        ? 'translate-y-0'
+                        : '-translate-y-full'
+                    }
+                    ${
+                      scrolled
+                        ? 'bg-white/95 backdrop-blur-xl shadow-xl'
+                        : 'bg-transparent'
+                    }`}
       >
-        <div className="bg-white/97 backdrop-blur-xl mx-4 my-3 rounded-3xl shadow-2xl border-4 border-kidYellow p-5 flex flex-col gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-20 sm:h-24 lg:h-28">
 
-          {/* MOBILE LINKS */}
-          {[
-            { label: '🏠 Home', path: '/' },
-            { label: '💛 About', path: '/about' },
-            { label: '🖼️ Gallery', path: '/gallery' },
-            { label: '📞 Contact', path: '/contact' },
-          ].map(({ label, path }) => (
-            <Link
-              key={path}
-              to={path}
-              className="font-fredoka font-bold text-xl text-gray-700 hover:text-kidPurple px-5 py-3.5 rounded-2xl hover:bg-kidYellow/30 transition-all"
-              onClick={() => setMenuOpen(false)}
+          {/* ───────── LOGO ───────── */}
+          <Link
+            to="/"
+            className="flex items-center group flex-shrink-0 mr-auto"
+          >
+            <div className="relative flex items-center">
+
+              <img
+                src={logo}
+                alt="school logo"
+                className="h-12 sm:h-16 lg:h-24 w-auto
+                           max-w-[160px] sm:max-w-[220px]
+                           lg:max-w-[320px] xl:max-w-[400px]
+                           object-contain drop-shadow-lg
+                           transition duration-300
+                           group-hover:scale-105"
+              />
+
+              <div
+                className="absolute inset-0 rounded-2xl
+                           bg-yellow-300/20 blur-2xl -z-10
+                           group-hover:scale-110
+                           transition duration-300"
+              />
+            </div>
+          </Link>
+
+          {/* ══════════ DESKTOP NAVIGATION ══════════ */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 ml-4">
+
+            {/* Main Links */}
+            {navLinks.map(({ label, path }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`font-fredoka font-bold
+                            px-5 py-2.5 rounded-full
+                            text-base xl:text-lg
+                            transition-all duration-300
+                            hover:scale-105 whitespace-nowrap
+                            ${
+                              location.pathname === path
+                                ? 'bg-kidPurple text-white shadow-lg'
+                                : 'text-gray-700 hover:bg-kidYellow hover:text-kidPurple'
+                            }`}
+              >
+                {label}
+              </Link>
+            ))}
+
+            {/* Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
             >
-              {label}
-            </Link>
-          ))}
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`font-fredoka font-bold
+                            px-5 py-2.5 rounded-full
+                            text-base xl:text-lg
+                            transition-all duration-300
+                            hover:scale-105
+                            flex items-center gap-1
+                            whitespace-nowrap
+                            ${
+                              dropdownOpen
+                                ? 'bg-kidBlue text-white shadow-lg'
+                                : 'text-gray-700 hover:bg-kidYellow hover:text-kidPurple'
+                            }`}
+              >
+                Programmes
 
-          {/* MOBILE PAGES SECTION */}
-          <div className="border-t-2 border-dashed border-kidYellow pt-4 mt-1">
+                <span
+                  className={`transition-transform duration-300 text-xs ${
+                    dropdownOpen ? 'rotate-180' : ''
+                  }`}
+                >
+                  ▾
+                </span>
+              </button>
 
+              {/* Dropdown Menu */}
+              <div
+                className={`absolute top-full left-0 mt-3 w-56
+                            bg-white rounded-3xl shadow-2xl
+                            border-2 border-kidYellow
+                            overflow-hidden z-50
+                            transition-all duration-300
+                            ${
+                              dropdownOpen
+                                ? 'opacity-100 translate-y-0 visible'
+                                : 'opacity-0 -translate-y-4 invisible'
+                            }`}
+              >
+                {pagesDropdown.map((item, i) => (
+                  <Link
+                    key={i}
+                    to={item.path}
+                    className="flex items-center gap-3
+                               px-5 py-3.5
+                               font-fredoka font-bold
+                               text-gray-700
+                               hover:bg-gradient-to-r
+                               hover:from-kidYellow
+                               hover:to-kidOrange
+                               hover:text-white
+                               transition-all
+                               border-b border-yellow-100
+                               last:border-none"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <span>{item.emoji}</span>
+
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Button */}
+<a
+  href="/contact#contact"
+  className="ml-2 bg-gradient-to-r
+             from-kidBlue to-kidPurple
+             text-white font-fredoka
+             px-6 py-2.5 rounded-full
+             shadow-xl hover:scale-105
+             hover:shadow-2xl
+             transition-all duration-300
+             text-base xl:text-lg"
+>
+  🎓 Get Started
+</a>
+          </div>
+
+          {/* ══════════ MOBILE RIGHT SIDE ══════════ */}
+          <div className="lg:hidden flex items-center gap-2.5 ml-3">
+
+            {/* Mobile CTA */}
+            <a
+  href="/contact#contact"
+  className="bg-gradient-to-r
+             from-kidBlue to-kidPurple
+             text-white font-fredoka
+             font-bold px-4 py-2
+             rounded-full shadow-md
+             text-sm whitespace-nowrap
+             active:scale-95 transition-transform"
+>
+  Get Started
+</a>
+
+            {/* Hamburger */}
             <button
-              className="w-full flex items-center justify-between font-fredoka text-kidOrange px-4 pb-2 text-base uppercase tracking-wider font-bold"
-              onClick={() => setMobilePagesOpen(!mobilePagesOpen)}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+              className={`w-10 h-10
+                          flex flex-col justify-center items-center
+                          gap-[5px] rounded-2xl
+                          transition-all duration-300
+                          ${
+                            menuOpen
+                              ? 'bg-kidPurple'
+                              : 'bg-kidYellow/60'
+                          }`}
             >
-              <span>📄 Pages</span>
 
               <span
-                className={`transition-transform duration-300 inline-block ${
-                  mobilePagesOpen ? 'rotate-180' : ''
-                }`}
-              >
-                ▾
-              </span>
-            </button>
+                className={`block h-[2.5px] rounded-full
+                            transition-all duration-300
+                            ${
+                              menuOpen
+                                ? 'rotate-45 translate-y-[7px] bg-white w-5'
+                                : 'bg-kidPurple w-5'
+                            }`}
+              />
 
-            <div
-              className={`overflow-hidden transition-all duration-300 ${
-                mobilePagesOpen
-                  ? 'max-h-80 opacity-100'
-                  : 'max-h-0 opacity-0'
-              }`}
-            >
-              {pagesDropdown.map((item, i) => (
+              <span
+                className={`block h-[2.5px] rounded-full
+                            bg-kidPurple w-4
+                            transition-all duration-300
+                            ${
+                              menuOpen
+                                ? 'opacity-0 scale-x-0'
+                                : ''
+                            }`}
+              />
+
+              <span
+                className={`block h-[2.5px] rounded-full
+                            transition-all duration-300
+                            ${
+                              menuOpen
+                                ? '-rotate-45 -translate-y-[7px] bg-white w-5'
+                                : 'bg-kidPurple w-5'
+                            }`}
+              />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ═══════════════ MOBILE MENU ═══════════════ */}
+      <div
+        className={`lg:hidden fixed inset-0 z-[9998]
+                    transition-all duration-300
+                    ${
+                      menuOpen
+                        ? 'visible'
+                        : 'invisible'
+                    }`}
+      >
+
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0
+                      bg-black/40 backdrop-blur-sm
+                      transition-opacity duration-300
+                      ${
+                        menuOpen
+                          ? 'opacity-100'
+                          : 'opacity-0'
+                      }`}
+          onClick={() => setMenuOpen(false)}
+        />
+
+        {/* Slide Menu */}
+        <div
+          className={`absolute top-0 left-0 right-0
+                      bg-white rounded-b-[2rem]
+                      shadow-2xl
+                      transition-transform duration-500 ease-out
+                      flex flex-col
+                      ${
+                        menuOpen
+                          ? 'translate-y-0'
+                          : '-translate-y-full'
+                      }`}
+          style={{
+            height: '100dvh',
+          }}
+        >
+          {/* Menu Header */}
+          <div className="flex items-center justify-between
+                          px-5 py-4
+                          border-b border-gray-100">
+          </div>
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto px-4 py-4">
+
+            {/* Nav Links */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+
+              {navLinks.map(({ label, path, emoji }) => (
                 <Link
-                  key={i}
-                  to={item.path}
-                  className="flex items-center gap-2 font-fredoka text-lg text-gray-600 hover:text-kidPurple px-6 py-2.5 rounded-2xl hover:bg-yellow-50 transition-all"
+                  key={path}
+                  to={path}
                   onClick={() => setMenuOpen(false)}
+                  className={`flex flex-col items-center justify-center
+                              gap-2 rounded-2xl py-5 px-3
+                              font-fredoka font-bold text-base
+                              transition-all duration-200
+                              ${
+                                location.pathname === path
+                                  ? 'bg-kidPurple text-white shadow-md'
+                                  : 'bg-gray-50 text-gray-700 hover:bg-kidYellow/40 hover:text-kidPurple'
+                              }`}
                 >
-                  {item.label}
+                  <span className="text-2xl">{emoji}</span>
+
+                  <span>{label}</span>
                 </Link>
               ))}
             </div>
+
+            {/* Accordion */}
+            <div className="rounded-2xl border border-kidYellow/60 overflow-hidden mb-4">
+
+              <button
+                onClick={() => setMobilePagesOpen(!mobilePagesOpen)}
+                className="w-full flex items-center justify-between
+                           px-4 py-4
+                           font-fredoka font-bold
+                           bg-kidYellow/20 text-gray-700"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="text-xl">📚</span>
+                  Our Programmes
+                </span>
+
+                <span
+                  className={`transition-transform duration-300 ${
+                    mobilePagesOpen ? 'rotate-180' : ''
+                  }`}
+                >
+                  ▾
+                </span>
+              </button>
+
+              <div
+                className={`overflow-hidden transition-all duration-300
+                            ${
+                              mobilePagesOpen
+                                ? 'max-h-[500px] opacity-100'
+                                : 'max-h-0 opacity-0'
+                            }`}
+              >
+                <div className="grid grid-cols-2 gap-2 p-2 bg-white">
+
+                  {pagesDropdown.map((item, i) => (
+                    <Link
+                      key={i}
+                      to={item.path}
+                      onClick={() => setMenuOpen(false)}
+                      className={`flex items-center gap-2
+                                  px-3 py-3 rounded-xl
+                                  font-fredoka font-bold text-sm
+                                  transition-all
+                                  ${
+                                    location.pathname === item.path
+                                      ? 'bg-kidOrange/20 text-kidOrange'
+                                      : 'bg-gray-50 text-gray-600 hover:bg-kidYellow/30 hover:text-kidPurple'
+                                  }`}
+                    >
+                      <span className="text-lg">{item.emoji}</span>
+
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Card */}
+            <div
+              className="p-5 rounded-3xl
+                         border border-kidBlue/20
+                         bg-gradient-to-br
+                         from-kidBlue/10 to-kidPurple/10"
+            >
+
+              <p className="text-center text-gray-600 font-fredoka text-sm mb-4">
+                Ready to join our family? 🌟
+              </p>
+
+             <a
+  href="/contact#contact"
+  onClick={() => setMenuOpen(false)}
+  className="block w-full text-center
+             py-4 rounded-2xl
+             bg-gradient-to-r
+             from-kidBlue to-kidPurple
+             text-white font-fredoka
+             font-bold text-lg
+             shadow-lg transition-all"
+>
+  🎓 Get Started Today
+</a>
+            </div>
           </div>
-
-          {/* CTA BUTTON */}
-          <Link
-            to="/pages/pricing"
-            className="mt-3 bg-gradient-to-r from-kidBlue to-kidPurple text-white font-fredoka py-4 rounded-3xl text-center text-xl shadow-lg hover:scale-[1.02] transition-transform"
-            onClick={() => setMenuOpen(false)}
-          >
-            🎓 Get Started
-          </Link>
-
         </div>
       </div>
-    </nav>
+    </>
   );
 }

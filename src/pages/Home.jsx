@@ -249,137 +249,193 @@ export default function Home() {
           </div>
         </div>
       </section>
+              
 
-     {/* ===== KEY FOCUS AREAS ===== */}
+   {/* ===== WHY CHOOSE US SECTION ===== */}
 <section
-  ref={ref('classes')}
-  data-section="classes"
-  className="py-20 relative overflow-hidden"
-  style={{
-    background:
-      'linear-gradient(135deg, #fdf2f8 0%, #fef9ec 50%, #eef2ff 100%)'
-  }}
+  ref={ref('features')}
+  data-section="features"
+  className="relative py-16 overflow-hidden bg-[#F7EFD2]"
 >
-  {/* Background */}
-  <div className="absolute inset-0 star-bg opacity-20" />
 
-  <div className="relative z-10 max-w-6xl mx-auto px-6">
-
-    {/* Heading */}
-    <div
-      className={`text-center mb-16 transition-all duration-700 ${
-        visible.classes
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-10'
-      }`}
+  {/* TOP WAVE */}
+  <div className="absolute top-0 left-0 w-full overflow-hidden leading-none rotate-180">
+    <svg
+      viewBox="0 0 1440 220"
+      className="relative block w-full h-[70px]"
+      preserveAspectRatio="none"
     >
-      <div className="inline-flex items-center gap-2 bg-kidPink/10 rounded-full px-5 py-2 mb-5">
-        <span className="font-fredoka text-kidPink text-sm">
-          🌟 Learning Focus
-        </span>
+      <path
+        fill="#fff"
+        d="M0,96L48,101.3C96,107,192,117,288,133.3C384,149,480,171,576,160C672,149,768,107,864,106.7C960,107,1056,149,1152,149.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      />
+    </svg>
+  </div>
+
+  {/* BOTTOM WAVE */}
+  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+    <svg
+      viewBox="0 0 1440 220"
+      className="relative block w-full h-[70px]"
+      preserveAspectRatio="none"
+    >
+      <path
+        fill="#fff"
+        d="M0,96L48,101.3C96,107,192,117,288,133.3C384,149,480,171,576,160C672,149,768,107,864,106.7C960,107,1056,149,1152,149.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      />
+    </svg>
+  </div>
+
+  <div className="max-w-6xl mx-auto px-5 relative z-10">
+
+    <div className="grid lg:grid-cols-2 gap-10 items-center">
+
+      {/* LEFT SIDE */}
+      <div
+        className={`transition-all duration-700 ${
+          visible.features
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-10'
+        }`}
+      >
+
+        {/* SMALL TITLE */}
+        <div className="flex items-center gap-2 mb-4">
+
+          <div className="w-2.5 h-2.5 rounded-full bg-[#FF9F6E]"></div>
+
+          <p className="uppercase tracking-[4px] text-[#4A4036] font-semibold text-xs">
+            Why Choose Us
+          </p>
+
+        </div>
+
+        {/* MAIN TITLE */}
+        <h2 className="font-fredoka text-[32px] md:text-[52px] leading-[1.1] text-[#241C1C] max-w-xl mb-8">
+          A place parents trust 
+          <br />
+          for safe and joyful
+          <br />
+          learning
+        </h2>
+
+        {/* CARTOON IMAGE */}
+        <div className="relative">
+
+          {/* SHADOW */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[230px] h-[14px] bg-[#F4A56E] rounded-full opacity-70 blur-[2px]"></div>
+
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/024/346/403/original/3d-cartoon-group-of-little-children-on-transparent-background-generative-ai-png.png"
+            alt=""
+            className="relative z-10 w-[220px] max-w-full mx-auto object-contain"
+          />
+
+        </div>
+
       </div>
 
-      <h2 className="font-fredoka text-5xl md:text-6xl text-kidPurple mb-4">
-        Key Focus <span className="text-kidOrange">Areas</span> 🎨
-      </h2>
+      {/* RIGHT SIDE */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-      <p className="font-nunito text-gray-600 text-lg max-w-2xl mx-auto">
-        We nurture every child through engaging experiences that build
-        confidence, creativity, communication, and joyful learning.
-      </p>
-    </div>
+        {[
+          {
+            number: '01',
+            title: 'Safe Environment',
+            desc: 'A safe, secure, and caring environment where children feel happy and confident every day.',
+            bg: 'bg-[#E9A1A5]',
+            icon: '🏫',
+          },
+          {
+            number: '02',
+            title: 'Caring Teachers',
+            desc: 'Experienced and loving teachers who guide children with patience and personal attention.',
+            bg: 'bg-[#B8D7F0]',
+            icon: '🧸',
+          },
+          {
+            number: '03',
+            title: 'Play Learning',
+            desc: 'Creative learning activities and interactive games that make education fun and exciting.',
+            bg: 'bg-[#F1ED87]',
+            icon: '🧩',
+          },
+          {
+            number: '04',
+            title: 'Trusted Care',
+            desc: 'Trusted preschool care with focus on emotional growth, creativity, and confidence building.',
+            bg: 'bg-[#BCA7E8]',
+            icon: '🖍️',
+          },
+        ].map((item, i) => (
 
-    {/* Focus Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <div
+            key={i}
+            className={`${item.bg} rounded-[1.5rem] p-6 shadow-md hover:scale-105 transition-all duration-500 min-h-[240px] flex flex-col justify-between ${
+              visible.features
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-10'
+            }`}
+            style={{
+              transitionDelay: `${i * 120}ms`,
+            }}
+          >
 
-      {[
-        {
-          emoji: '🗣️',
-          title: 'Language & Communication Skills',
-          color: 'from-pink-100 to-rose-100'
-        },
-        {
-          emoji: '❤️',
-          title: 'Emotional Intelligence',
-          color: 'from-orange-100 to-yellow-100'
-        },
-        {
-          emoji: '🧠',
-          title: 'Cognitive Development',
-          color: 'from-blue-100 to-cyan-100'
-        },
-        {
-          emoji: '🤝',
-          title: 'Social Interaction & Teamwork',
-          color: 'from-green-100 to-emerald-100'
-        },
-        {
-          emoji: '🎨',
-          title: 'Creative Expression',
-          color: 'from-purple-100 to-pink-100'
-        },
-        {
-          emoji: '🏃',
-          title: 'Motor Skills Development',
-          color: 'from-yellow-100 to-orange-100'
-        }
-      ].map((item, i) => (
-        <div
-          key={i}
-          className={`bg-gradient-to-br ${item.color} rounded-[2rem] p-8 shadow-xl border-2 border-white/60 hover:scale-105 hover:-translate-y-1 transition-all duration-300 ${
-            visible.classes
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
-          }`}
-          style={{ transitionDelay: `${i * 120}ms` }}
-        >
-          <div className="text-6xl mb-5 animate-float">
-            {item.emoji}
+            {/* TOP */}
+            <div className="flex items-start justify-between mb-6">
+
+              <h3 className="font-fredoka text-4xl text-[#1E1717]">
+                {item.number}
+              </h3>
+
+              <div className="text-3xl">
+                {item.icon}
+              </div>
+
+            </div>
+
+            {/* LINE */}
+            <div className="w-full h-[1px] bg-black/10 mb-5"></div>
+
+            {/* CONTENT */}
+            <div>
+
+              <h4 className="font-fredoka text-2xl text-[#1E1717] mb-3 leading-tight">
+                {item.title}
+              </h4>
+
+              <p className="font-nunito text-[#3F3A3A] text-[15px] leading-relaxed">
+                {item.desc}
+              </p>
+
+            </div>
+
           </div>
 
-          <h3 className="font-fredoka text-2xl text-kidPurple leading-snug">
-            {item.title}
-          </h3>
+        ))}
 
-          <div className="mt-5 flex items-center gap-2">
-            <div className="w-10 h-1 rounded-full bg-kidPink" />
-            <div className="w-3 h-3 rounded-full bg-kidOrange" />
-          </div>
-        </div>
-      ))}
+      </div>
+
     </div>
+
   </div>
+
 </section>
 
-      {/* ===== FEATURES ===== */}
-      <section ref={ref('features')} data-section="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className={`text-center mb-14 transition-all duration-700 ${visible.features ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h2 className="font-fredoka text-5xl text-kidPurple mb-3">Why Choose <span className="text-kidBlue">us</span> 💫</h2>
-            <p className="font-nunito text-gray-600 text-lg">We're not just a school — we're a magical world of wonder! 🌈</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((f, i) => (
-              <div
-                key={i}
-                className={`text-center p-6 rounded-3xl border-4 border-dashed hover:border-solid transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-default ${
-                  ['border-kidYellow hover:bg-yellow-50','border-kidBlue hover:bg-blue-50','border-kidBlue hover:bg-blue-50','border-kidGreen hover:bg-green-50'][i]
-                } ${visible.features ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                style={{transitionDelay:`${i*100}ms`}}
-              >
-                <div className="text-5xl mb-3 animate-float" style={{animationDelay:`${i*0.5}s`}}>{f.emoji}</div>
-                <h3 className="font-fredoka text-xl text-kidPurple mb-2">{f.title}</h3>
-                <p className="font-nunito text-gray-600 text-sm">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* ===== CTA IMAGE ONLY ===== */}
+<section className="w-full overflow-hidden">
+  <img
+    src={ctaImage}
+    alt="Preschool Admission Banner"
+    className="w-full h-auto object-contain"
+  />
+</section>
       {/* ===== TESTIMONIALS ===== */}
       <section ref={ref('testimonials')} data-section="testimonials"
         className="py-20 relative overflow-hidden"
-        style={{background:'linear-gradient(135deg,#eff6ff 0%,#ede9fe 50%,#dbeafe 100%)'}}
+       style={{
+  background: '#ffffff'
+}}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className={`text-center mb-14 transition-all duration-700 ${visible.testimonials ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -414,83 +470,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== CTA ===== */}
-      <section className="py-20 bg-gradient-to-r from-kidOrange via-kidBlue to-kidPurple relative overflow-hidden">
-        
-        <div className="absolute inset-0 star-bg opacity-20" />
 
-        {['🚀','🌟','🎉','💫','⭐','🏆'].map((em,i) => (
-          <div
-            key={i}
-            className="absolute text-4xl opacity-20 animate-float"
-            style={{
-              left:`${10+i*15}%`,
-              top:`${20+(i%2)*50}%`,
-              animationDelay:`${i*0.5}s`
-            }}
-          >
-            {em}
-          </div>
-        ))}
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            
-            {/* LEFT CONTENT */}
-<div className="text-center lg:text-left">
-
-  <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2 rounded-full mb-6 shadow-lg">
-    <span className="text-2xl">🎓</span>
-
-    <span className="font-fredoka text-white text-sm md:text-base tracking-wide">
-      Admissions Open for 2026–27
-    </span>
-  </div>
-
-  <h2 className="font-fredoka text-5xl md:text-6xl leading-tight text-white mb-5">
-    Give Your Child a{' '}
-    <span className="text-kidYellow">
-      Bright Beginning
-    </span>{' '}
-    ✨
-  </h2>
-
-  <p className="font-nunito text-white/90 text-xl leading-relaxed mb-8 max-w-2xl">
-    Join Pansies & Poppies International Pre-School and create
-    a joyful learning journey filled with creativity,
-    confidence, friendship, and fun.
-  </p>
-
-  <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-
-    <Link
-      to="/pages/pricing"
-      className="bg-white text-kidPurple font-fredoka text-xl px-8 py-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 hover:bg-kidYellow"
-    >
-      🎓 Apply Now
-    </Link>
-
-    <Link
-      to="/contact"
-      className="bg-white/20 backdrop-blur border-2 border-white text-white font-fredoka text-xl px-8 py-4 rounded-full shadow-xl hover:scale-110 transition-all duration-300 hover:bg-white/30"
-    >
-      📅 Schedule a Visit
-    </Link>
-  </div>
-</div>
-            {/* RIGHT SVG IMAGE */}
-            <div className="flex justify-center lg:justify-end">
-              <img
-                src={ctaImage}
-                alt="CTA Kids"
-                className="w-full max-w-md lg:max-w-lg object-contain animate-float"
-              />
-            </div>
-
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
