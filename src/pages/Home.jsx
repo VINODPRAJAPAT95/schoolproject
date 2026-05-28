@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import heroKid from '../assets/hero-kid.png'
 import ctaImage from '../assets/divider.png'
+import kidsPhoto from "../assets/kids-photo.jpg";
+import classroomImg from "../assets/classroom.jpg";
+
+
 
 
 const stats = [
@@ -44,6 +48,7 @@ const marqueeItems = ['🌟 Fun Learning', '🎨 Creative Arts', '🔢 Math Magi
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState(null)
   const [visible, setVisible] = useState({})
+    const [openFaq, setOpenFaq] = useState(null)
   const sectionRefs = useRef({})
 
   useEffect(() => {
@@ -181,21 +186,21 @@ export default function Home() {
             {/* Main Photo - Smaller Size */}
             <div className="relative">
               <div className="bg-white p-3 rounded-[2rem] shadow-2xl border-8 border-[#A5D6FF] max-w-[340px] mx-auto">
-                <img 
-                  src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800" 
-                  alt="Happy Kids" 
-                  className="rounded-2xl w-full"
-                />
-              </div>
+  <img 
+    src={kidsPhoto}
+    alt="Happy Kids" 
+    className="rounded-2xl w-full"
+  />
+</div>
 
               {/* Smaller Classroom Photo (Yellow Frame) - Even Smaller */}
-              <div className="absolute -bottom-6 -right-6 bg-white p-3 rounded-3xl shadow-2xl border-8 border-[#FFD966] w-52 md:w-60">
-                <img 
-                  src="https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?w=600" 
-                  alt="Classroom" 
-                  className="rounded-2xl w-full"
-                />
-              </div>
+             <div className="absolute -bottom-6 -right-6 bg-white p-3 rounded-3xl shadow-2xl border-8 border-[#FFD966] w-52 md:w-60">
+  <img 
+    src={classroomImg}
+    alt="Classroom" 
+    className="rounded-2xl w-full"
+  />
+</div>
             </div>
 
             {/* Trusted by Parents */}
@@ -469,8 +474,155 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+  {/* faq section start--- */}
+<section className="py-14 bg-[#fffff] overflow-hidden">
+  <div className="max-w-6xl mx-auto px-4">
 
+    {/* Heading */}
+    <div className="text-center mb-10">
+      <p className="font-baloo text-kidBlue text-sm tracking-wide mb-2">
+        Frequently Ask Question
+      </p>
 
+      <h2 className="font-fredoka text-3xl md:text-5xl text-[#1d1d1d]">
+        Any <span className="text-kidBlue">Questions?</span> 💭
+      </h2>
+    </div>
+
+    <div className="grid lg:grid-cols-2 gap-10 items-center">
+
+      {/* LEFT FAQ */}
+      <div className="space-y-4">
+
+        {[
+          {
+            question: 'What is Pansies & Poppies Preschool?',
+            answer:
+              'Pansies & Poppies is a joyful preschool focused on playful learning, creativity, safety, and child development.',
+          },
+          {
+            question: 'Why should parents choose us?',
+            answer:
+              'We provide caring teachers, safe classrooms, fun activities, and personalized attention for every child.',
+          },
+          {
+            question: 'How can I contact school?',
+            answer:
+              'You can contact us anytime through WhatsApp, phone call, or by visiting our preschool campus.',
+          },
+          {
+            question: 'Is the school safe for children?',
+            answer:
+              'Yes ✨ We maintain a fully secure, clean, and child-friendly environment with trained staff.',
+          },
+          {
+            question: 'What activities do kids enjoy?',
+            answer:
+              'Kids enjoy art & craft, music, dance, storytelling, fun games, outdoor play, and creative learning.',
+          },
+        ].map((item, i) => (
+
+          <div
+            key={i}
+            className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
+          >
+
+            {/* QUESTION */}
+            <button
+              onClick={() =>
+                setOpenFaq(openFaq === i ? null : i)
+              }
+              className="w-full px-5 py-4 flex items-center justify-between text-left"
+            >
+
+              <h3 className="font-baloo text-[15px] md:text-[17px] text-gray-700">
+                {item.question}
+              </h3>
+
+              <div className="w-8 h-8 rounded-full bg-kidBlue text-white text-xl flex items-center justify-center shrink-0">
+                {openFaq === i ? '−' : '+'}
+              </div>
+
+            </button>
+
+            {/* ANSWER */}
+            <div
+              className={`transition-all duration-300 overflow-hidden ${
+                openFaq === i
+                  ? 'max-h-40 opacity-100 pb-4'
+                  : 'max-h-0 opacity-0'
+              }`}
+            >
+              <p className="px-5 font-nunito text-gray-500 text-sm leading-relaxed">
+                {item.answer}
+              </p>
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="text-center relative">
+
+        {/* Blur */}
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-56 h-56 bg-kidBlue/10 rounded-full blur-3xl"></div>
+
+        {/* Image */}
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+          alt="FAQ"
+          className="relative z-10 w-52 md:w-64 mx-auto object-contain animate-float"
+        />
+
+        {/* Content */}
+        <div className="relative z-10 mt-5">
+          <h3 className="font-fredoka text-3xl text-[#1d1d1d] mb-2">
+            Ask Anything 
+          </h3>
+
+          <p className="font-nunito text-gray-500 text-sm md:text-base mb-5">
+            Ask anything about admissions, activities or preschool.
+          </p>
+
+          {/* FORM */}
+          <div className="max-w-sm mx-auto">
+
+            <input
+              type="text"
+              id="faqMessage"
+              placeholder="Enter Here"
+              className="w-full h-12 rounded-lg border border-gray-200 px-4 outline-none focus:border-kidBlue font-nunito text-sm shadow-sm"
+            />
+
+            {/* WhatsApp Button */}
+            <button
+              onClick={() => {
+                const message =
+                  document.getElementById('faqMessage').value
+
+                const phone = '919075018523'
+
+                const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+
+                window.open(url, '_blank')
+              }}
+              className="mt-6 bg-kidBlue hover:bg-kidPurple text-white font-fredoka text-base px-10 py-3 rounded-full shadow-[0_8px_25px_rgba(0,200,255,0.35)] hover:scale-105 transition-all duration-300"
+            >
+              Send on WhatsApp
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
     </div>
   )
 }

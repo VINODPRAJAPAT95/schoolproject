@@ -56,7 +56,6 @@ export default function Contact() {
       <PageHero
         title="Contact Us"
         subtitle="We're here to help your child's bright future!"
-        emoji="📞"
         bg="bg-gradient-to-r from-purple-500 to-pink-500"
       />
 
@@ -318,17 +317,17 @@ export default function Contact() {
 <div className="w-full pb-14">
   <div className="overflow-hidden shadow-xl border-y-4 border-white">
 
-    <iframe
-      title="School Location"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60530.07509503798!2d73.7667!3d18.6298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9e760173a49%3A0xa8d56f8e7a30ddca!2sChinchwad%2C%20Pimpri-Chinchwad%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000"
-      width="100%"
-      height="450"
-      style={{ border: 0, display: 'block' }}
-      allowFullScreen=""
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-      className="w-full"
-    />
+   <iframe
+  title="School Location"
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.5082634857727!2d73.76132187439046!3d18.596195282512053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b969168917dd%3A0x9aa1a7b9b20c44de!2sShree%20Datta%20Mandir!5e0!3m2!1sen!2sin!4v1779874146001!5m2!1sen!2sin"
+  width="100%"
+  height="450"
+  style={{ border: 0, display: "block" }}
+  allowFullScreen=""
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  className="w-full rounded-xl"
+/>
 
   </div>
 </div>

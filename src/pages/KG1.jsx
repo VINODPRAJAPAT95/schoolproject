@@ -60,7 +60,6 @@
         <PageHero
           title="Kindergarten 1"
           subtitle="First year of Kindergarten"
-          emoji="🎈"
           bg="bg-gradient-to-r from-kidPink to-kidPurple"
         />
 

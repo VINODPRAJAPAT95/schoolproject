@@ -1,237 +1,518 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.svg'
+import { FaInstagram, FaFacebook, FaWhatsapp, FaYoutube } from 'react-icons/fa'
 
-const floatingEmojis = [
-  '🌟',
-  '🎈',
-  '🦋',
-  '🌈',
-  '🎨',
-  '⭐',
-  '🎪',
-  '🌸',
-  '🦄',
-  '🎠',
+/* ─────────────────────────────────
+   DATA
+───────────────────────────────── */
+const quickLinks = [
+  { label: 'Home',      path: '/',        emoji: '🏠' },
+  { label: 'About Us',  path: '/about',   emoji: '💛' },
+  { label: 'Gallery',   path: '/gallery', emoji: '🖼️' },
+  { label: 'Programmes',path: '/pages/Pre-Nursery', emoji: '📚' },
+  { label: 'Contact',   path: '/contact', emoji: '📞' },
 ]
 
-export default function Footer() {
-  return (
-    <footer
-      className="relative overflow-hidden"
-      style={{
-        background:
-          'linear-gradient(135deg, #FEF9C3 10%, #FEF08A 35%, #FDE68A 60%, #FCD34D 100%)',
-      }}
+const programmes = [
+  { label: 'Pre Nursery', path: '/pages/Pre-Nursery', emoji: '🌱', age: 'Age 2–3' },
+  { label: 'Nursery',     path: '/pages/Nursery',     emoji: '🌼', age: 'Age 3–4' },
+  { label: 'KG 1',        path: '/pages/KG1',         emoji: '⭐', age: 'Age 4–5' },
+  { label: 'KG 2',        path: '/pages/KG2',         emoji: '🚀', age: 'Age 5–6' },
+]
+
+const socialLinks = [
+  { Icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram',
+    color: '#E1306C', bg: 'rgba(225,48,108,.12)' },
+  { Icon: FaFacebook,  href: 'https://facebook.com',  label: 'Facebook',
+    color: '#1877F2', bg: 'rgba(24,119,242,.12)' },
+  { Icon: FaWhatsapp,  href: 'https://wa.me/911234567890', label: 'WhatsApp',
+    color: '#25D366', bg: 'rgba(37,211,102,.12)' },
+  { Icon: FaYoutube,   href: 'https://youtube.com',   label: 'YouTube',
+    color: '#FF0000', bg: 'rgba(255,0,0,.12)' },
+]
+
+const legalLinks = ['Privacy Policy', 'Terms of Use', 'Cookie Policy', 'Support']
+
+/* scattered emoji particles */
+const particles = [
+  { e: '🌟', x: 8,  y: 12, s: 1.4, o: 0.08 },
+  { e: '🎈', x: 18, y: 55, s: 1.1, o: 0.07 },
+  { e: '🦋', x: 35, y: 20, s: 1.3, o: 0.06 },
+  { e: '🌈', x: 55, y: 65, s: 1.0, o: 0.07 },
+  { e: '🎨', x: 72, y: 15, s: 1.5, o: 0.06 },
+  { e: '⭐', x: 85, y: 48, s: 1.2, o: 0.08 },
+  { e: '🎪', x: 92, y: 80, s: 1.0, o: 0.05 },
+  { e: '🌸', x: 48, y: 88, s: 1.3, o: 0.07 },
+  { e: '🦄', x: 62, y: 38, s: 1.1, o: 0.06 },
+  { e: '🎠', x: 25, y: 82, s: 1.4, o: 0.06 },
+]
+
+/* ─────────────────────────────────
+   HOOK — intersection observer
+───────────────────────────────── */
+function useInView(threshold = 0.1) {
+  const ref = useRef(null)
+  const [vis, setVis] = useState(false)
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect() } },
+      { threshold }
+    )
+    if (ref.current) obs.observe(ref.current)
+    return () => obs.disconnect()
+  }, [threshold])
+  return [ref, vis]
+}
+
+/* ─────────────────────────────────
+   SUBCOMPONENTS
+───────────────────────────────── */
+
+/** Animated wave divider */
+const WaveDivider = () => (
+  <div className="w-full overflow-hidden leading-none" style={{ marginBottom: -2 }}>
+    <svg
+      viewBox="0 0 1440 80"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+      className="w-full"
+      style={{ height: 80, display: 'block' }}
     >
-      {/* Floating Emojis */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {floatingEmojis.map((emoji, i) => (
-          <div
-            key={i}
-            className="absolute text-2xl opacity-10 animate-float"
-            style={{
-              left: `${8 + i * 9.2}%`,
-              top: `${15 + (i % 3) * 25}%`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${3 + (i % 3)}s`,
-            }}
-          >
-            {emoji}
-          </div>
-        ))}
+      <defs>
+        <linearGradient id="wg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stopColor="#FDE68A" />
+          <stop offset="50%"  stopColor="#FBCFE8" />
+          <stop offset="100%" stopColor="#DDD6FE" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1380,20 1440,40 L1440,80 L0,80 Z"
+        fill="url(#wg)"
+      />
+    </svg>
+  </div>
+)
+
+/** Newsletter input */
+function Newsletter() {
+  const [email, setEmail]   = useState('')
+  const [sent,  setSent]    = useState(false)
+  const [focus, setFocus]   = useState(false)
+
+  const submit = (e) => {
+    e.preventDefault()
+    if (email) { setSent(true); setEmail('') }
+  }
+
+  return sent ? (
+    <div
+      className="flex items-center gap-2 px-4 py-3 rounded-2xl font-fredoka text-sm font-bold"
+      style={{ background: 'rgba(52,211,153,.15)', color: '#059669' }}
+    >
+      <span className="text-xl">✅</span> You're subscribed! Thanks 🎉
+    </div>
+  ) : (
+    <form onSubmit={submit} className="flex flex-col gap-2">
+      <div
+        className="flex items-center gap-2 rounded-2xl px-3 py-1 transition-all duration-300"
+        style={{
+          border:     `2px solid ${focus ? '#A78BFA' : 'rgba(167,139,250,.3)'}`,
+          background: 'rgba(255,255,255,.6)',
+          backdropFilter: 'blur(8px)',
+          boxShadow:  focus ? '0 0 0 4px rgba(167,139,250,.15)' : 'none',
+        }}
+      >
+        <span className="text-base flex-shrink-0">📧</span>
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onFocus={() => setFocus(true)}
+          onBlur={()  => setFocus(false)}
+          placeholder="your@email.com"
+          className="flex-1 bg-transparent outline-none font-fredoka text-sm text-gray-700
+                     placeholder:text-gray-400 py-2"
+          required
+        />
       </div>
+      <button
+        type="submit"
+        className="font-fredoka font-bold text-white text-sm py-3 px-5 rounded-2xl
+                   transition-all duration-300 hover:scale-105 active:scale-95"
+        style={{
+          background:  'linear-gradient(135deg, #7C3AED, #DB2777)',
+          boxShadow:   '0 4px 16px rgba(124,58,237,.35)',
+        }}
+      >
+        📬 Subscribe to Updates
+      </button>
+    </form>
+  )
+}
 
-      {/* Stars */}
-      <div className="absolute inset-0 star-bg opacity-20 pointer-events-none" />
+/* ─────────────────────────────────
+   MAIN FOOTER
+───────────────────────────────── */
+export default function Footer() {
+  const [footerRef, footerVis] = useInView(0.05)
 
-      <div className="relative z-10 py-14 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+  return (
+    <>
+      {/* wave transition from page body into footer */}
+      <WaveDivider />
 
-          {/* Main Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+      <footer
+        ref={footerRef}
+        className="relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(160deg, #FEF9C3 0%, #FCE7F3 40%, #EDE9FE 80%, #DBEAFE 100%)',
+        }}
+      >
+        {/* ── Decorative circles ── */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: 400, height: 400,
+            top: -120, left: -120,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(250,204,21,.25) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: 350, height: 350,
+            bottom: -80, right: -80,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(167,139,250,.2) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: 250, height: 250,
+            top: '40%', left: '50%',
+            transform: 'translateX(-50%)',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(251,191,36,.15) 0%, transparent 70%)',
+          }}
+        />
 
-            {/* Brand */}
-            <div>
+        {/* ── Emoji particles ── */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          {particles.map((p, i) => (
+            <span
+              key={i}
+              className="absolute"
+              style={{
+                left: `${p.x}%`,
+                top:  `${p.y}%`,
+                fontSize: `${p.s}rem`,
+                opacity: p.o,
+                animation: `floatParticle ${4 + i * 0.7}s ease-in-out infinite alternate`,
+                animationDelay: `${i * 0.4}s`,
+              }}
+            >
+              {p.e}
+            </span>
+          ))}
+        </div>
 
-              {/* Logo */}
-              <div className="flex items-center justify-center sm:justify-start mb-6">
-                <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 animate-float">
-                  <img
-                    src={logo}
-                    alt="Pansies & Poppies Logo"
-                    className="w-full h-full object-contain drop-shadow-2xl"
-                  />
-                </div>
+        {/* ════════════════════════════════════════
+            MAIN GRID
+        ════════════════════════════════════════ */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+
+            {/* ── COL 1 : Brand + Social ── */}
+            <div
+              className="sm:col-span-2 lg:col-span-1 flex flex-col"
+              style={{
+                opacity:   footerVis ? 1 : 0,
+                transform: footerVis ? 'translateY(0)' : 'translateY(24px)',
+                transition: 'opacity .55s ease .1s, transform .55s ease .1s',
+              }}
+            >
+              {/* Logo card */}
+              <div
+                className="inline-block rounded-3xl p-3 mb-5 self-start"
+                style={{
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: '0 4px 20px rgba(124,58,237,.12)',
+                }}
+              >
+                <img
+                  src={logo}
+                  alt="School Logo"
+                  className="h-16 sm:h-20 w-auto object-contain"
+                  style={{ maxWidth: 160 }}
+                />
               </div>
 
-              {/* Social Media */}
-              <div className="flex gap-4 mb-8">
-
-                {/* Instagram */}
-                <a
-                  href="https://www.instagram.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-white hover:bg-pink-100 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110"
-                >
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-                    alt="Instagram"
-                    className="w-6 h-6"
-                  />
-                </a>
-
-                {/* Facebook */}
-                <a
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-white hover:bg-blue-100 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110"
-                >
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
-                    alt="Facebook"
-                    className="w-6 h-6"
-                  />
-                </a>
-
-                {/* WhatsApp */}
-                <a
-                  href="https://wa.me/911234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-white hover:bg-green-100 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110"
-                >
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
-                    alt="WhatsApp"
-                    className="w-6 h-6"
-                  />
-                </a>
-
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-fredoka text-xl text-kidPurple mb-5 flex items-center gap-2">
-                🔗 Quick Links
-              </h4>
-
-              {[
-                { label: 'Home 🏠', path: '/' },
-                { label: 'About Us 💫', path: '/about' },
-                { label: 'Gallery 📸', path: '/gallery' },
-                { label: 'Programs 🎓', path: '/programs' },
-                { label: 'Contact 📞', path: '/contact' },
-              ].map((item, i) => (
-                <Link
-                  key={i}
-                  to={item.path}
-                  className="block font-baloo text-kidPurple/80 hover:text-pink-600 transition-all duration-300 mb-3 hover:translate-x-2 hover:scale-105 transform text-sm"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Features */}
-            <div>
-              <h4 className="font-fredoka text-xl text-kidPurple mb-5 flex items-center gap-2">
-                ✨ Features
-              </h4>
-
-              {[
-                'Smart Classrooms 🖥️',
-                'Activity Learning 🎨',
-                'Safe Transport 🚌',
-                'Healthy Meals 🍎',
-                'Kids Playground 🛝',
-                'Parent Dashboard 👨‍👩‍👧',
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="font-baloo text-kidPurple/80 hover:text-pink-600 transition-all duration-300 mb-3 text-sm hover:translate-x-2 cursor-pointer"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-fredoka text-xl text-kidPurple mb-5">
-                📬 Get In Touch
-              </h4>
-
-              {[
-                { icon: '📱', text: '+1 234 567 890' },
-                { icon: '📧', text: 'pansiesandpoppies@gmail.com' },
-                { icon: '📍', text: '123 Sunshine Street' },
-                { icon: '🕐', text: '8:00 AM – 4:00 PM' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 mb-3 font-baloo text-kidPurple/80 text-sm hover:text-pink-600 transition-colors"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.text}</span>
-                </div>
-              ))}
-
-              {/* Newsletter */}
-              <div className="mt-6">
-                <p className="font-fredoka text-kidPurple text-sm mb-3">
-                  📰 Newsletter
-                </p>
-
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    placeholder="Your email ✉️"
-                    className="flex-1 px-4 py-3 rounded-2xl font-baloo text-xs text-kidPurple outline-none bg-white shadow-lg"
-                  />
-
-                  <button className="bg-kidPurple text-white font-fredoka px-4 py-3 rounded-2xl text-xs hover:scale-110 transition-transform font-bold shadow-lg hover:bg-purple-900">
-                    Go 🚀
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Bottom */}
-          <div className="border-t-2 border-dashed border-kidPurple/20 pt-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-
-              <p className="font-baloo text-kidPurple/80 text-sm text-center md:text-left">
-                🌈 © 2025 Pansies & Poppies International Pre-School. Made with ❤️ for amazing little learners!
+              <p className="font-fredoka text-gray-600 text-sm leading-relaxed mb-6 max-w-[240px]">
+                A place where laughter fills the air and every day is an adventure in learning.
               </p>
 
-              <div className="flex gap-5 flex-wrap justify-center">
-                {[
-                  'Privacy Policy 🔒',
-                  'Terms 📜',
-                  'Cookies 🍪',
-                  'Support 💬',
-                ].map((item, i) => (
+              {/* Social icons */}
+              <div className="flex gap-3 flex-wrap">
+                {socialLinks.map(({ Icon, href, label, color, bg }) => (
                   <a
-                    key={i}
-                    href="#"
-                    className="font-baloo text-kidPurple/70 hover:text-pink-600 text-xs transition-colors"
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    className="w-11 h-11 rounded-2xl flex items-center justify-center
+                               transition-all duration-300 hover:scale-110 active:scale-95"
+                    style={{
+                      background: bg,
+                      border: `1.5px solid ${color}33`,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = color; e.currentTarget.querySelector('svg').style.color = '#fff' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = bg;    e.currentTarget.querySelector('svg').style.color = color }}
                   >
-                    {item}
+                    <Icon size={20} style={{ color, transition: 'color .2s' }} />
                   </a>
                 ))}
               </div>
 
+              {/* rating badge */}
+              <div
+                className="mt-6 inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl self-start"
+                style={{
+                  background: 'rgba(255,255,255,.6)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1.5px solid rgba(251,191,36,.4)',
+                }}
+              >
+                <span className="text-yellow-400 text-base">★★★★★</span>
+                <span className="font-fredoka font-bold text-gray-700 text-sm">4.9 / 5 · 200+ reviews</span>
+              </div>
+            </div>
+
+            {/* ── COL 2 : Quick Links + Programmes ── */}
+            <div
+              className="grid grid-cols-2 gap-6 sm:gap-8 sm:col-span-2 lg:col-span-2"
+              style={{
+                opacity:   footerVis ? 1 : 0,
+                transform: footerVis ? 'translateY(0)' : 'translateY(24px)',
+                transition: 'opacity .55s ease .2s, transform .55s ease .2s',
+              }}
+            >
+              {/* Quick Links */}
+              <div>
+                <h4
+                  className="font-fredoka font-bold text-base mb-4 flex items-center gap-2"
+                  style={{ color: '#7C3AED' }}
+                >
+                  <span
+                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
+                    style={{ background: 'rgba(124,58,237,.15)' }}
+                  >
+                    🔗
+                  </span>
+                  Quick Links
+                </h4>
+                <div className="space-y-2.5">
+                  {quickLinks.map(({ label, path, emoji }) => (
+                    <Link
+                      key={label}
+                      to={path}
+                      className="flex items-center gap-2.5 group"
+                    >
+                      <span
+                        className="w-7 h-7 rounded-xl flex items-center justify-center text-sm
+                                   transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                        style={{ background: 'rgba(255,255,255,.6)' }}
+                      >
+                        {emoji}
+                      </span>
+                      <span
+                        className="font-fredoka text-sm text-gray-600 group-hover:text-kidPurple
+                                   transition-colors duration-200 group-hover:translate-x-0.5
+                                   inline-block transition-transform"
+                      >
+                        {label}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Programmes */}
+              <div>
+                <h4
+                  className="font-fredoka font-bold text-base mb-3 flex items-center gap-2"
+                  style={{ color: '#DB2777' }}
+                >
+                  <span
+                    className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
+                    style={{ background: 'rgba(219,39,119,.15)' }}
+                  >
+                    📚
+                  </span>
+                  Programmes
+                </h4>
+                <div className="space-y-2">
+                  {programmes.map(({ label, path, emoji, age }) => (
+                    <Link
+                      key={label}
+                      to={path}
+                      className="flex items-center gap-2.5 group"
+                    >
+                      <span
+                        className="text-lg flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
+                      >
+                        {emoji}
+                      </span>
+                      <div>
+                        <p
+                          className="font-fredoka font-bold text-sm text-gray-700
+                                     group-hover:text-kidPink transition-colors duration-200 leading-tight"
+                        >
+                          {label}
+                        </p>
+                        <p className="font-fredoka text-[11px] text-gray-400">{age}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ── COL 4 : Contact + Newsletter ── */}
+            <div
+              style={{
+                opacity:   footerVis ? 1 : 0,
+                transform: footerVis ? 'translateY(0)' : 'translateY(24px)',
+                transition: 'opacity .55s ease .35s, transform .55s ease .35s',
+              }}
+            >
+              <h4
+                className="font-fredoka font-bold text-base mb-4 flex items-center gap-2"
+                style={{ color: '#F97316' }}
+              >
+                <span
+                  className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
+                  style={{ background: 'rgba(249,115,22,.15)' }}
+                >
+                  📍
+                </span>
+                Get In Touch
+              </h4>
+
+              {/* contact items */}
+              <div className="space-y-3 mb-6">
+                {[
+                  { icon: '📱', label: '+91 12345 67890', sub: 'Call / WhatsApp' },
+                  { icon: '📧', label: 'info@school.com', sub: 'Write to us' },
+                  { icon: '📍', label: 'Pansies & Poppies International Pre-School!', sub: 'Pimpri, Maharashtra' },
+                  { icon: '🕐', label: 'Mon – Sat',        sub: '8:00 AM – 4:00 PM' },
+                ].map(({ icon, label, sub }) => (
+                  <div key={label} className="flex items-start gap-3">
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base"
+                      style={{ background: 'rgba(255,255,255,.65)', backdropFilter: 'blur(6px)' }}
+                    >
+                      {icon}
+                    </div>
+                    <div>
+                      <p className="font-fredoka font-bold text-gray-700 text-sm leading-tight">{label}</p>
+                      <p className="font-fredoka text-gray-400 text-xs">{sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Newsletter */}
+              <div
+                className="rounded-3xl p-4"
+                style={{
+                  background: 'rgba(255,255,255,.55)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1.5px solid rgba(167,139,250,.25)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,.06)',
+                }}
+              >
+                <p className="font-fredoka font-bold text-gray-700 text-sm mb-1 flex items-center gap-1.5">
+                  <span>📬</span> Stay Updated
+                </p>
+                <p className="font-fredoka text-gray-400 text-xs mb-3">
+                  News, events & school updates!
+                </p>
+                <Newsletter />
+              </div>
             </div>
           </div>
 
         </div>
-      </div>
-    </footer>
+
+        {/* ════════════════════════════════════════
+            BOTTOM BAR
+        ════════════════════════════════════════ */}
+        <div
+          className="relative z-10 border-t"
+          style={{ borderColor: 'rgba(167,139,250,.2)' }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5
+                          flex flex-col md:flex-row items-center justify-between gap-3">
+            {/* copyright */}
+            <div className="flex items-center gap-2">
+              <div
+                className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
+                style={{ background: 'rgba(124,58,237,.15)' }}
+              >
+                ©
+              </div>
+              <p className="font-fredoka text-gray-500 text-sm">
+                2025 <span className="font-bold text-gray-700">Pansies & Poppies International Pre-School!</span>. Made with ❤️ for little ones.
+              </p>
+            </div>
+
+            {/* legal links */}
+            <div className="flex flex-wrap justify-center gap-1">
+              {legalLinks.map((link, i) => (
+                <React.Fragment key={link}>
+                  <a
+                    href="#"
+                    className="font-fredoka text-gray-500 text-xs hover:text-kidPurple
+                               transition-colors duration-200 px-1"
+                  >
+                    {link}
+                  </a>
+                  {i < legalLinks.length - 1 && (
+                    <span className="text-gray-300 text-xs self-center">·</span>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* back to top */}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-1.5 font-fredoka font-bold text-xs
+                         px-4 py-2.5 rounded-xl transition-all duration-300
+                         hover:scale-105 active:scale-95"
+              style={{
+                background: 'linear-gradient(135deg, #7C3AED, #DB2777)',
+                color: '#fff',
+                boxShadow: '0 3px 12px rgba(124,58,237,.3)',
+              }}
+            >
+              ↑ Back to Top
+            </button>
+          </div>
+        </div>
+
+        {/* Keyframes */}
+        <style>{`
+          @keyframes floatParticle {
+            from { transform: translateY(0px) rotate(0deg); }
+            to   { transform: translateY(-14px) rotate(12deg); }
+          }
+        `}</style>
+      </footer>
+    </>
   )
 }
